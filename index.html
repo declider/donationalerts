@@ -79,7 +79,7 @@
             return (await res.json())
         }
 
-        let url = new URL("https://www.donationalerts.com/oauth/authorize?client_id=10715&redirect_uri=https://declider.github.io/donationalerts&response_type=token&force_verify=true")
+        let url = new URL("https://www.donationalerts.com/oauth/authorize?client_id=10715&redirect_uri=https://declider.github.io/donationalerts/&response_type=token&force_verify=true")
         let scopes = ["oauth-user-show","oauth-donation-subscribe"]
 
         const access_token_el = document.getElementById("access_token")
