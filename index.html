@@ -48,19 +48,19 @@
             <article>
                 <h6>access_token</h6>
                 <input type="password" id="access_token" placeholder="Не авторизован" readonly>
-                <button>Скопировать</button>
+                <button onclick="copy('access_token')">Скопировать</button>
             </article>
 
             <article>
                 <h6>socket_connection_token</h6>
                 <input type="password" id="socket_connection_token" placeholder="Не авторизован" readonly>
-                <button>Скопировать</button>
+                <button onclick="copy('socket_connection_token')">Скопировать</button>
             </article>
 
             <article>
                 <h6>id</h6>
                 <input type="password" id="id" placeholder="Не авторизован" readonly>
-                <button>Скопировать</button>
+                <button onclick="copy('id')">Скопировать</button>
             </article>
         </div>
         <button onclick="open_link()">Авторизация</button>
@@ -130,6 +130,13 @@
             if(scopes.length!==0) {
                 window.open(url.toString().replaceAll("%2B","+"),"_self")
             }
+        }
+        
+        
+        
+        function copy(element) {
+            let value = document.getElementById(element).value
+            navigator.clipboard.writeText(value)
         }
 
         main()
