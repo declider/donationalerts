@@ -111,11 +111,12 @@
                 let index = scopes.indexOf(el.dataset.scope)
                 scopes.splice(index, 1)
             }
+            console.log(scopes)
 
             if(scopes.length===0) {
                 url.searchParams.delete("scope")
             } else {
-                let scope_param = scopes.join("+")
+                let scope_param = encodeURI(scopes.join("+"))
                 url.searchParams.set("scope", scope_param)
             }
         }
