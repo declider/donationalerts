@@ -70,7 +70,7 @@
     <script>
 
         async function auth(access_token) {
-            let res = await fetch('https://donationalerts-1-h8829158.deta.app/?access_token='+access_token, {
+            let res = await fetch('https://donationalerts-1-h8829158.deta.app/auth?access_token='+access_token, {
                 method: "get"
             })
             return (await res.json())
