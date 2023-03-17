@@ -69,12 +69,9 @@
     </main>
     <script>
 
-        async function auth() {
-            let res = await fetch('https://www.donationalerts.com/api/v1/user/oauth', {
-                method: "get",
-                headers: {
-                    'Authorization': 'Bearer ' + access_token,
-                }
+        async function auth(access_token) {
+            let res = await fetch('https://donationalerts-1-h8829158.deta.app/?access_token='+access_token, {
+                method: "get"
             })
             return (await res.json())
         }
@@ -88,12 +85,20 @@
 
 
         async function main() {
+            
+            if(scopes.length===0) {
+                url.searchParams.delete("scope")
+            } else {
+                let scope_param = scopes.join("+")
+                url.searchParams.append("scope", scope_param)
+            }
+            
             if(window.location.hash){
                 let hash = window.location.hash
                 let access_token = hash.split("&")[0].replace("#access_token=","").trim()
                 access_token_el.value = access_token
 
-                let data = await auth()
+                let data = await auth(access_token)
                 let socket_connection_token = data.socket_connection_token
                 socket_connection_token_el.value = socket_connection_token
                 let id = data.id
@@ -116,14 +121,14 @@
             if(scopes.length===0) {
                 url.searchParams.delete("scope")
             } else {
-                let scope_param = encodeURI(scopes.join("+"))
+                let scope_param = scopes.join("+")
                 url.searchParams.set("scope", scope_param)
             }
         }
 
         function open_link() {
             if(scopes.length!==0) {
-                window.open(url.toString(),"_self")
+                window.open(url.toString().replaceAll("%2B","+"),"_self")
             }
         }
 
