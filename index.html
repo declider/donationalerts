@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация DonationAlerts</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+</head>
+<body>
+    <main class="container-fluid">
+        Выставьте нужные параметры и авторизуйтесь.
+        Если требуется только подписка на оповещения о донатах - достаточно <strong>oauth-user-show</strong> и <strong>oauth-donation-subscribe</strong>.
+        <div class="grid">
+            <article>
+                <h6>scopes</h6>
+                <label for="terms">
+                    <input type="checkbox" id="terms" data-scope="oauth-user-show" name="terms" onchange="changeScopes(event)" checked>
+                    oauth-user-show
+                </label>
+
+                <label for="terms">
+                    <input type="checkbox" id="terms" data-scope="oauth-donation-subscribe" name="terms" onchange="changeScopes(event)" checked>
+                    oauth-donation-subscribe
+                </label>
+
+                <label for="terms">
+                    <input type="checkbox" id="terms" data-scope="oauth-donation-index" name="terms" onchange="changeScopes(event)">
+                    oauth-donation-index
+                </label>
+
+                <label for="terms">
+                    <input type="checkbox" id="terms" data-scope="oauth-custom_alert-store" name="terms" onchange="changeScopes(event)">
+                    oauth-custom_alert-store
+                </label>
+
+                <label for="terms">
+                    <input type="checkbox" id="terms" data-scope="oauth-goal-subscribe" name="terms" onchange="changeScopes(event)">
+                    oauth-goal-subscribe
+                </label>
+
+                <label for="terms">
+                    <input type="checkbox" id="terms" data-scope="oauth-poll-subscribe" name="terms" onchange="changeScopes(event)">
+                    oauth-poll-subscribe
+                </label>
+            </article>
+
+            <article>
+                <h6>access_token</h6>
+                <input type="password" id="access_token" placeholder="Не авторизован" readonly>
+                <button>Скопировать</button>
+            </article>
+
+            <article>
+                <h6>socket_connection_token</h6>
+                <input type="password" id="socket_connection_token" placeholder="Не авторизован" readonly>
+                <button>Скопировать</button>
+            </article>
+
+            <article>
+                <h6>id</h6>
+                <input type="password" id="id" placeholder="Не авторизован" readonly>
+                <button>Скопировать</button>
+            </article>
+        </div>
+        <button onclick="open_link()">Авторизация</button>
+        
+        
+    </main>
+    <script>
+
+        async function auth() {
+            let res = await fetch('https://www.donationalerts.com/api/v1/user/oauth', {
+                method: "get",
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                }
+            })
+            return (await res.json())
+        }
+
+        let url = new URL("https://www.donationalerts.com/oauth/authorize?client_id=10715&redirect_uri=https://declider.github.io/donationalerts&response_type=token&force_verify=true")
+        let scopes = ["oauth-user-show","oauth-donation-subscribe"]
+
+        const access_token_el = document.getElementById("access_token")
+        const socket_connection_token_el = document.getElementById("socket_connection_token")
+        const id_el = document.getElementById("id")
+
+
+        async function main() {
+            if(window.location.hash){
+                let hash = window.location.hash
+                let access_token = hash.split("&")[0].replace("#access_token=","").trim()
+                access_token_el.value = access_token
+
+                let data = await auth()
+                let socket_connection_token = data.socket_connection_token
+                socket_connection_token_el.value = socket_connection_token
+                let id = data.id
+                id_el.value = id
+            }
+        }
+        
+        
+
+        function changeScopes(e) {
+            let el = e.srcElement
+            if(el.checked) {
+                scopes.push(el.dataset.scope)
+            } else {
+                let index = scopes.indexOf(el.dataset.scope)
+                scopes.splice(index, 1)
+            }
+
+            if(scopes.length===0) {
+                url.searchParams.delete("scope")
+            } else {
+                let scope_param = scopes.join("+")
+                url.searchParams.set("scope", scope_param)
+            }
+        }
+
+        function open_link() {
+            if(scopes.length!==0) {
+                window.open(url.toString(),"_self")
+            }
+        }
+
+        main()
+
+    </script>
+</body>
+</html>
