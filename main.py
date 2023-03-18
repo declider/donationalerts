@@ -21,7 +21,7 @@ origins = [
     "declider.github.io/",
     "declider.github.io/donationalerts",
     "declider.github.io/donationalerts/",
-]
+] # Много разных на всякий случай, хз как они работают
 
 
 
@@ -48,4 +48,4 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["get"],
     allow_headers=["*"],
-)
+) # Вызывается в самом к онце потому-что из-за бага ничего не работает, если вызывать это в самом начале
