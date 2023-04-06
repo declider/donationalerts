@@ -75,7 +75,7 @@ function copy_all() {
     data['access_token'] = access_token_el.value
     data['socket_connection_token'] = socket_connection_token_el.value
     data['id'] = id_el.value
-    navigator.clipboard.writeText(data)
+    navigator.clipboard.writeText(JSON.stringify(data))
 }
 
 main()
