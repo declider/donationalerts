@@ -12,7 +12,6 @@ const access_token_el = document.getElementById("access_token")
 const socket_connection_token_el = document.getElementById("socket_connection_token")
 const id_el = document.getElementById("id")
 
-
 async function main() {
 
     if(scopes.length===0) {
@@ -37,8 +36,6 @@ async function main() {
     }
 }
 
-
-
 function changeScopes(e) {
     let el = e.srcElement
     if(el.checked) {
@@ -62,8 +59,6 @@ function open_link() {
         window.open(url.toString().replaceAll("%2B","+"),"_self")
     }
 }
-
-
 
 function copy(element) {
     let value = document.getElementById(element).value
